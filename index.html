@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Terrescollectifs_Provinces_1.js"></script>
+        <script src="data/Rgion_Maroc_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[27.298585867742506,-14.056431107592775],[35.81741567394212,1.900481439840835]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_imagesatellite_0');
+        map.getPane('pane_imagesatellite_0').style.zIndex = 400;
+        var layer_imagesatellite_0 = L.tileLayer('https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            pane: 'pane_imagesatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_imagesatellite_0;
+        map.addLayer(layer_imagesatellite_0);
+        function pop_Terrescollectifs_Provinces_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Nom_province</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Superficie_collective</th>\
+                        <td>' + (feature.properties['SUPERFICIE'] !== null ? autolinker.link(feature.properties['SUPERFICIE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Région'] !== null ? autolinker.link(feature.properties['Région'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Terrescollectifs_Provinces_1_0() {
+            return {
+                pane: 'pane_Terrescollectifs_Provinces_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Terrescollectifs_Provinces_1');
+        map.getPane('pane_Terrescollectifs_Provinces_1').style.zIndex = 401;
+        map.getPane('pane_Terrescollectifs_Provinces_1').style['mix-blend-mode'] = 'normal';
+        var layer_Terrescollectifs_Provinces_1 = new L.geoJson(json_Terrescollectifs_Provinces_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Terrescollectifs_Provinces_1',
+            layerName: 'layer_Terrescollectifs_Provinces_1',
+            pane: 'pane_Terrescollectifs_Provinces_1',
+            onEachFeature: pop_Terrescollectifs_Provinces_1,
+            style: style_Terrescollectifs_Provinces_1_0,
+        });
+        bounds_group.addLayer(layer_Terrescollectifs_Provinces_1);
+        map.addLayer(layer_Terrescollectifs_Provinces_1);
+        function pop_Rgion_Maroc_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SUPERFICIE'] !== null ? autolinker.link(feature.properties['SUPERFICIE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['classe'] !== null ? autolinker.link(feature.properties['classe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Rgion_Maroc_2_0(feature) {
+            switch(String(feature.properties['classe'])) {
+                case '1':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(255,245,240,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(254,227,214,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(253,198,175,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(252,164,134,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '5':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(252,129,97,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '6':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(248,93,66,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '7':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(234,55,42,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '8':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(204,25,29,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '9':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(169,16,22,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '10':
+                    return {
+                pane: 'pane_Rgion_Maroc_2',
+                opacity: 1,
+                color: 'rgba(103,0,13,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Rgion_Maroc_2');
+        map.getPane('pane_Rgion_Maroc_2').style.zIndex = 402;
+        map.getPane('pane_Rgion_Maroc_2').style['mix-blend-mode'] = 'normal';
+        var layer_Rgion_Maroc_2 = new L.geoJson(json_Rgion_Maroc_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Rgion_Maroc_2',
+            layerName: 'layer_Rgion_Maroc_2',
+            pane: 'pane_Rgion_Maroc_2',
+            onEachFeature: pop_Rgion_Maroc_2,
+            style: style_Rgion_Maroc_2_0,
+        });
+        bounds_group.addLayer(layer_Rgion_Maroc_2);
+        map.addLayer(layer_Rgion_Maroc_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Région_Maroc<br /><table><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_ALJANOUB00ha00a00ca0.png" /></td><td>AL JANOUB: 00 ha 00a 00ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_CASABLACASETTAT15ha00a00ca1.png" /></td><td>CASABLACA-SETTAT: 15 ha 00a 00ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_DRAATAFILALET100ha00a00ca2.png" /></td><td>DRAA-TAFILALET: 100 ha 00 a 00ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_ORIENTAL131ha49a90ca3.png" /></td><td>ORIENTAL: 131 ha 49 a 90 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_TANGERTETOUANALHOCEIMA214ha90a40ca4.png" /></td><td>TANGER-TETOUAN-AL HOCEIMA: 214 ha 90 a 40 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_FESMEKNES251ha08a93ca5.png" /></td><td>FES-MEKNES: 251 ha 08 a 93 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_MARRAKECHSAFI477ha13a02ca6.png" /></td><td>MARRAKECH-SAFI: 477 ha 13 a 02 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_BENIMELLALKHENIFRA481ha61a68ca7.png" /></td><td>BENI MELLAL-KHENIFRA: 481 ha 61 a 68 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_RABATSALEKENITRA772ha72a82ca8.png" /></td><td>RABAT-SALE-KENITRA: 772 ha 72 a 82 ca</td></tr><tr><td style="text-align: center;"><img src="legend/Rgion_Maroc_2_SOUSSMASSA1521ha49a43ca9.png" /></td><td>SOUSS- MASSA: 1521 ha 49 a 43 ca</td></tr></table>': layer_Rgion_Maroc_2,'<img src="legend/Terrescollectifs_Provinces_1.png" /> Terres collectifs_Provinces': layer_Terrescollectifs_Provinces_1,"image satellite": layer_imagesatellite_0,}).addTo(map);
+        setBounds();
+        resetLabels([layer_Rgion_Maroc_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Rgion_Maroc_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Rgion_Maroc_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Rgion_Maroc_2]);
+        });
+        </script>
+    </body>
+</html>
